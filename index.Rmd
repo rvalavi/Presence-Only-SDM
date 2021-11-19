@@ -255,7 +255,7 @@ plot(gm, pages = 1, rug = TRUE, shade = TRUE)
 ## GLM
 
 To fit GLMs, we used forward and backward model selection with options for dropping variables or including them, considering only linear or linear plus quadratic terms. No interaction terms were tested. Selection was based on change in AIC (Hastie *et al.*, 2009).  
-For this purpose, we use the `step.Gam` function in **[gam](https://cran.r-project.org/web/packages/gam/index.html)** package. A model scope is needed to determine the possible terms to select from. We restricted the choices to excluding a variable, or fitting linear or *quadratic* functions.      
+For this purpose, we use the `step.Gam` function in [`gam`](https://cran.r-project.org/web/packages/gam/index.html) package. A model scope is needed to determine the possible terms to select from. We restricted the choices to excluding a variable, or fitting linear or *quadratic* functions.      
 
 
 ```{r}
@@ -684,7 +684,7 @@ Sys.time() - tmp
 ```
 
 ```{r, echo=FALSE}
-load("xgb.RData")
+load("data/xgb.RData")
 print(xgbt)
 
 ```
@@ -773,7 +773,6 @@ For down-sampling, the number of background (0s) in each bootstrap sample should
 
 ```{r}
 prNum <- as.numeric(table(training$occ)["1"]) # number of presences
-bgNum <- as.numeric(table(training$occ)["0"]) # number of backgrounds
 # the sample size in each class; the same as presence number
 smpsize <- c("0" = prNum, "1" = prNum)
 

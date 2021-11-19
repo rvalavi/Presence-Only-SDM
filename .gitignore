@@ -1,3 +1,7 @@
+# biomod files
+occ
+occ/*
+
 # History files
 .Rhistory
 .Rapp.history
