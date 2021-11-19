@@ -1807,7 +1807,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </nav>
 </div>
 <h1 id="introduction">Introduction</h1>
-<p>In this document, we show how different <strong>species distribution models (SDMs)</strong> can be fitted to <strong>presence-background</strong> data in the R programming language. Several statistical and machine learning algorithms are presented here, covering all methods presented in the main text. Each model is fitted using the same code we used for producing the results in our paper. Some additional suggestions are also provided that could be useful for smaller modeling exercises, but that we could not apply due to the large number of species and computation limits. The code provided here can be used for modeling any binary response</p>
+<p>In this document, we show how different <strong>species distribution models (SDMs)</strong> can be fitted to <strong>presence-background</strong> data in the R programming language. Several statistical and machine learning algorithms are presented here, covering all methods presented in the main text. Each model is fitted using the same code we used for producing the results in our paper. Some additional suggestions are also provided that could be useful for smaller modeling exercises, but that we could not apply due to the large number of species and computation limits. The code provided here can be used for modeling any binary response.</p>
 <p>Please cite us by <a href="https://doi.org/10.1002/ecm.1486"><strong>Valavi, R., Guillera‐Arroita, G, Lahoz‐Monfort, J.J. &amp; Elith, J. (2021) Predictive performance of presence-only species distribution models: a benchmark study with reproducible code. Ecological Monographs.</strong></a> if you use the materials in this document.</p>
 <div class="layout-chunk" data-layout="l-body">
 
@@ -1819,7 +1819,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h2 id="loading-species-data">Loading species data</h2>
 <p>Here, code for loading the example species data from the <code>disdat</code> package is presented. You need to load the species <em>presences</em> and <em>background</em> for training the models and species <em>presence-absence</em> and the <em>environmental covariates</em> for testing the models. Notice the background data shown in the following code is <strong>10,000</strong> random background sample (from the NCEAS 2006 paper). For the our paper, <strong>50,000</strong> random samples were used. So, the model fitting is faster for this example compared to the modeling time reported in the main text. You can find the files for 50k background samples in the supplementary materials.</p>
-<p>After loading the data, you need to convert the categorical covariates to <em>factor</em> (check Elith <em>et al.</em> 2020) or the documentation of the <code>disdat</code> package for the list of covariates and their types). In addition, some models require the covariates to be on the same scale e.g. SVM. So we normalized (scale and center to mean and standard deviation) the continuous covariate before model fitting (in the real modeling, the covariates were not normalized for Lasso GLM, Ridge regression, and MaxEnts as they have internal normalization). The same parameter used for transforming (mean and standard deviation of the training samples) the training data should be applied to the testing data and the raster files when one wants to predict to raster.</p>
+<p>After loading the data, you need to convert the categorical covariates to <code>factor</code> data type (check Elith <em>et al.</em> [2020] or the documentation of the <code>disdat</code> package for the list of covariates and their types). In addition, some models require the covariates to be on the same scale e.g. SVM. So we normalized (scale and center to mean and standard deviation) the continuous covariate before model fitting (in the real modeling, the covariates were not normalized for Lasso GLM, Ridge regression, and MaxEnts as they have internal normalization). The same parameter used for transforming (mean and standard deviation of the training samples) the training data should be applied to the testing data and the raster files when one wants to predict to raster.</p>
 <p>To install the <code>disdat</code> package use:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1918,7 +1918,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 1.056774 mins</code></pre>
+<pre><code>Time difference of 1.15616 mins</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># check the appropriateness of Ks</span>
 <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.check.html">gam.check</a></span><span class="op">(</span><span class="va">gm</span><span class="op">)</span>
@@ -1957,7 +1957,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 <h2 id="glm">GLM</h2>
 <p>To fit GLMs, we used forward and backward model selection with options for dropping variables or including them, considering only linear or linear plus quadratic terms. No interaction terms were tested. Selection was based on change in AIC (Hastie <em>et al.</em>, 2009).<br />
-For this purpose, we use the <code>step.Gam</code> function in <strong><a href="https://cran.r-project.org/web/packages/gam/index.html">gam</a></strong> package. A model scope is needed to determine the possible terms to select from. We restricted the choices to excluding a variable, or fitting linear or <em>quadratic</em> functions.</p>
+For this purpose, we use the <code>step.Gam</code> function in <a href="https://cran.r-project.org/web/packages/gam/index.html"><code>gam</code></a> package. A model scope is needed to determine the possible terms to select from. We restricted the choices to excluding a variable, or fitting linear or <em>quadratic</em> functions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># loading the packages</span>
@@ -2041,7 +2041,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 46.80179 secs</code></pre>
+<pre><code>Time difference of 46.96897 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lm_subset</span><span class="op">)</span>
 </code></pre>
@@ -2144,7 +2144,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 1.040726 secs</code></pre>
+<pre><code>Time difference of 1.179698 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot the regularization path and shrinkage in the coefficients</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lasso</span>, xvar <span class="op">=</span> <span class="st">&quot;lambda&quot;</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -2166,7 +2166,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 10.94798 secs</code></pre>
+<pre><code>Time difference of 12.58428 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the cross-validation result</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lasso_cv</span><span class="op">)</span>
@@ -2249,7 +2249,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 46.41329 secs</code></pre>
+<pre><code>Time difference of 49.51096 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mars_fit</span><span class="op">)</span>
 </code></pre>
@@ -2358,7 +2358,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 40.32433 secs</code></pre>
+<pre><code>Time difference of 42.72901 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># predicting with MaxNet</span>
 <span class="va">maxnet_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dismo/man/predict.html">predict</a></span><span class="op">(</span><span class="va">mxnet</span>, <span class="va">testing_env</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">&quot;cloglog&quot;</span><span class="op">)</span><span class="op">)</span>
@@ -2405,7 +2405,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 6.498128 mins</code></pre>
+<pre><code>Time difference of 7.140608 mins</code></pre>
 </div>
 <p>The vertical green line shows the best number of trees, where the holdout deviance converges (the horizontal red line).</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2523,7 +2523,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 1.720029 mins</code></pre>
+<pre><code>Time difference of 1.853103 mins</code></pre>
 </div>
 <p>The process of fitting unbiased trees is costly and as a result creating ensembles of many <code>ctrees</code> in <code>cforest</code> is computationally extensive. This is also true when the fitted model is used to predict new data. It almost takes the same time as the model fitting process.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2551,7 +2551,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 7.344676 secs</code></pre>
+<pre><code>Time difference of 8.489 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># predict with RF and RF down-sampled</span>
 <span class="va">rfpred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rf</span>, <span class="va">testing_env</span>, type <span class="op">=</span> <span class="st">&quot;prob&quot;</span><span class="op">)</span>
@@ -2575,7 +2575,6 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="va">prNum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">training</span><span class="op">$</span><span class="va">occ</span><span class="op">)</span><span class="op">[</span><span class="st">&quot;1&quot;</span><span class="op">]</span><span class="op">)</span> <span class="co"># number of presences</span>
-<span class="va">bgNum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">training</span><span class="op">$</span><span class="va">occ</span><span class="op">)</span><span class="op">[</span><span class="st">&quot;0&quot;</span><span class="op">]</span><span class="op">)</span> <span class="co"># number of backgrounds</span>
 <span class="co"># the sample size in each class; the same as presence number</span>
 <span class="va">smpsize</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">&quot;0&quot;</span> <span class="op">=</span> <span class="va">prNum</span>, <span class="st">&quot;1&quot;</span> <span class="op">=</span> <span class="va">prNum</span><span class="op">)</span>
 
@@ -2589,7 +2588,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 2.665343 secs</code></pre>
+<pre><code>Time difference of 3.046428 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">rf_downsample</span>, main <span class="op">=</span> <span class="st">&quot;RF down-sampled&quot;</span><span class="op">)</span>
 </code></pre>
@@ -2621,7 +2620,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 19.64474 secs</code></pre>
+<pre><code>Time difference of 23.49159 secs</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># predicting on test data</span>
 <span class="va">svm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">svm_e</span>, <span class="va">testing_env</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -2710,7 +2709,7 @@ Number of Fisher Scoring iterations: 15</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">tmp</span>
 </code></pre>
 </div>
-<pre><code>Time difference of 3.569007 mins</code></pre>
+<pre><code>Time difference of 3.534656 mins</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
