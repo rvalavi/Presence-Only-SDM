@@ -16,8 +16,9 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
       # - name: Install rmarkdown
         # run: Rscript -e 'install.packages("rmarkdown")'
-      - name: Install required packages
+      - name: Read packages lists
         run: Rscript -e 'pkgs <- readLines("cran_packages.txt")'
+      - name: Install required packages
         run: Rscript -e 'sapply(1:length(pkgs), install.packages(pkgs[i]))'
       - name: Render README
         # run: Rscript -e 'rmarkdown::render("index.Rmd", output_format = "html_document")'
