@@ -335,7 +335,7 @@ library(glmnet)
 library(myspatial)
 
 # generating the quadratic terms for all continuous variables
-# function to creat quadratic terms for lasso and ridge
+# function to create quadratic terms for lasso and ridge
 quad_obj <- make_quadratic(training, cols = covars)
 # now we can predict this quadratic object on the training and testing data
 # this make two columns for each covariates used in the  transformation
@@ -375,7 +375,7 @@ plot(lasso, xvar = "lambda", label = TRUE)
 
 ```
 
-As you can see by changing (log) `Lambda` the coefficients shrink (the y-axes) and the number of covariates included in the model, decreases (x-axes, top) as the coefficients can be set to zeros in the lasso. To select the best `Lambda`, cross-validation is used. The following code shows how to do cross-validation to select this parameter in *lasso* (and *ridge*). This is the model object later used for predicting the testing data and on the raster files.
+As you can see by changing (log) `Lambda` the coefficients shrink (the y-axes) and the number of covariates included in the model, decreases (x-axes, top) as the coefficients can be set to zeros in the lasso. To select the best `Lambda`, cross-validation (CV) is used. The following code shows how to do cross-validation to select this parameter in *lasso* (and *ridge*). This is the model object later used for predicting the testing data and on the raster files.
 
 ```{r}
 tmp <- Sys.time()
@@ -398,12 +398,12 @@ The two vertical dashed-lines show options for selecting the best `Lambda` param
 For fitting ridge regression, the same code is used except the `alpha` parameter is set to `0`.
 
 ```{r fig.width=5.5, fig.height=4}
-# fitting ridge resgression
+# fitting ridge regression
 set.seed(32639)
 ridge <- glmnet(x = training_sparse,
                 y = training_quad$occ,
                 family = "binomial",
-                alpha = 0, # here 1 means fitting ridge regression
+                alpha = 0, # here 0 means fitting ridge-regression
                 weights = wt)
 # plot the regularization path and shrinkage in the coefficients
 plot(ridge, xvar = "lambda", label = TRUE)
@@ -414,7 +414,7 @@ The shrinkage in ridge regression does not lead to removing the coefficients. So
 
 ### Predicting on test data
 
-For predicting with *ridge* or *lasso*, you only need their `cv.glmnet` objects. A value of `Lambda` must be selected by the `s` argument. You should either select the minimum cv deviance (left dashed-line in the `cv.glmnet` plot) or the one-standard-deviation (right dashed-line) by setting the `s = "lambda.min"` or `s = "lambda.1se"` respectively. We used the minimum cv deviance for our analysis, although the package authors recommended to used one-standard-deviation.
+For predicting with *ridge* or *lasso*, you only need their `cv.glmnet` objects. A value of `Lambda` must be selected by the `s` argument. You should either select the minimum CV deviance (left dashed-line in the `cv.glmnet` plot) or the one-standard-deviation (right dashed-line) by setting the `s = "lambda.min"` or `s = "lambda.1se"` respectively. We used the minimum CV deviance for our analysis, although the package authors recommended to used one-standard-deviation.
 
 ```{r}
 # predicting with lasso model
@@ -653,6 +653,7 @@ mytrControl <- trainControl(method = "cv",
                             allowParallel = TRUE)
 
 # setting the range of parameters for grid search tuning
+# in this setting, all the hyper-parameters are constant except nrounds
 mytuneGrid <- expand.grid(
   nrounds = seq(from = 500, to = 15000, by = 500),
   eta = 0.001,
@@ -697,6 +698,7 @@ print(xgb_fit$bestTune)
 ```
 
 Model tuning for the same species with 50,000 background points took around 1 hour, although we only have one parameter to tune (`nrounds`).    
+
 
 
 ## cforest
