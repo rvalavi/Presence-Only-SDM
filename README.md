@@ -12,4 +12,4 @@ This repository stores the Appendix S2 of "*Predictive performance of presence-o
 You can see the online version of the supporting information here: [https://rvalavi.github.io/Presence-Only-SDM](https://rvalavi.github.io/Presence-Only-SDM/).
 
 # Citation
-Please cite us by "*[Valavi, R., Guillera‐Arroita, G, Lahoz‐Monfort, J.J. & Elith, J. (2021) Predictive performance of presence-only species distribution models: a benchmark study with reproducible code. Ecological Monographs.](https://doi.org/10.1002/ecm.1486)*" if you use the materials of this repository.
+Please cite us by "*Valavi, R., Guillera‐Arroita, G, Lahoz‐Monfort, J.J. & Elith, J. (2021) Predictive performance of presence-only species distribution models: a benchmark study with reproducible code. Ecological Monographs.[DOI:10.1002/ecm.1486](https://doi.org/10.1002/ecm.1486)*" if you use the materials of this repository.
